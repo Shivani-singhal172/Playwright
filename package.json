@@ -1,0 +1,22 @@
+{
+  "name": "playwrightautomation",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Shivani-singhal172/Playwright#readme",
+  "bugs": {
+    "url": "https://github.com/Shivani-singhal172/Playwright/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shivani-singhal172/Playwright.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {},
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.3"
+  }
+}
