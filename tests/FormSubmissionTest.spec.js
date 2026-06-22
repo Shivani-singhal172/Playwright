@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test('Submitting Form', async ({ page }) => {
-  
+
   await page.goto('file:///Users/shivanisinghal/Desktop/automation-practice-master/app/index.html');
- 
+
   await page.locator("//a[@href='form-submission.html']").click();
   await page.waitForTimeout(5000);
   await page.locator('input[id="fullName"]').fill('Shivani');
