@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 const BasePage = require('../Utils/BasePage');
 const AlertAndModalPage = require('../pages/AlertAndModalPage');
-const testData = require('../testdata/PasswordData.json');
 let alertAndModalPage;
 
 test.beforeEach(async ({ page }) => {
@@ -13,7 +12,7 @@ test.beforeEach(async ({ page }) => {
   await page.waitForTimeout(2000);
 });
 
-test('Button Interactions for Javascript Alert ', async ({ page }) => {
+test('Javascript Alert ', async ({ page }) => {
   const dialogPromise = page.waitForEvent('dialog');
   page.locator("//button[text()='Show Alert']").click();
   const dialog = await dialogPromise;
@@ -22,7 +21,7 @@ test('Button Interactions for Javascript Alert ', async ({ page }) => {
   expect(dialog.message()).toBe(msg);
 });
 
-test('Button Interactions for Confirm Dialog', async ({ page }) => {
+test('Confirm Dialog', async ({ page }) => {
   //Confirm Dialog
   const dialogPromise1 = page.waitForEvent('dialog');
   page.locator("//button[text()='Show Confirm Dialog']").click();
@@ -34,7 +33,7 @@ test('Button Interactions for Confirm Dialog', async ({ page }) => {
 
 });
 
-test('Button Interactions for Prompt Dialog', async ({ page }) => {
+test('Prompt Dialog', async ({ page }) => {
   //Prompt Dialog
   const dialogPromise2 = page.waitForEvent('dialog');
   page.locator("//button[text()='Show Prompt']").click();
@@ -46,7 +45,7 @@ test('Button Interactions for Prompt Dialog', async ({ page }) => {
 
 });
 
-test('Button Interactions for Simple Modal', async ({ page }) => {
+test('Simple Modal', async ({ page }) => {
   // Simple Modal
   await page.locator("//button[text()='Open Simple Modal']").click();
   await expect(page.locator('#simpleModal')).toBeVisible();
@@ -57,7 +56,7 @@ test('Button Interactions for Simple Modal', async ({ page }) => {
   await expect(page.locator('#simpleModal')).not.toBeVisible();
 
 });
-test('Button Interactions for confirmation modal', async ({ page }) => {
+test('confirmation modal', async ({ page }) => {
   //confirmation modal
   await page.locator("//button[text()='Open Confirmation Modal']").click();
   await expect(page.locator('#confirmModal')).toBeVisible();
@@ -70,7 +69,7 @@ test('Button Interactions for confirmation modal', async ({ page }) => {
   await expect(page.locator('#confirmModal')).not.toBeVisible();
 });
 
-test('Button Interactions for Form Modal', async ({ page }) => {
+test('Form Modal', async ({ page }) => {
   //Form Modal
   await page.locator("//button[text()='Open Form Modal']").click();
   await expect(page.locator('#formModal')).toBeVisible();
@@ -80,7 +79,7 @@ test('Button Interactions for Form Modal', async ({ page }) => {
   await expect(page.locator('#formModalResult')).toHaveText('Form submitted! Name: Shivani, Email: shivani@example.com');
 });
 
-test('Button Interactions for Delayed Modal', async ({ page }) => {
+test('Delayed Modal', async ({ page }) => {
   //Delayed Modal
   await page.locator("//button[text()='Show Modal (2s delay)']").click();
   await page.waitForTimeout(2000);
