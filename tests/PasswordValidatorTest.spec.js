@@ -1,232 +1,122 @@
 import { test, expect } from '@playwright/test';
+const BasePage = require('../Utils/BasePage');
+const PasswordValidatorPage = require('../pages/passwordValidatorPage');
+const testData = require('../testdata/PasswordData.json');
+let passwordPage;
+
+test.beforeEach(async ({ page }) => {
+    passwordPage = new PasswordValidatorPage(page);
+    await page.goto(
+        BasePage.getProperty('baseUrlPasswordVal')
+    );
+});
 
 test('password Validator character length is less than 8 ', async ({ page }) => {
-
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("Shivani");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must be between 8 and 15 characters."
-    );
+    await passwordPage.enterPassword(testData.shortPassword);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError);
 });
 
 
 test('password Validator character length is more than 15', async ({ page }) => {
+    await passwordPage.enterPassword(testData.longPassword);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("Shivanisinghal123");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must be between 8 and 15 characters."
-    );
 });
 
 
 test('password Validator character has only numeric values ', async ({ page }) => {
+    await passwordPage.enterPassword(testData.allNumericPassword);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("12345678901234");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_)."
-    );
 });
 
 
 test('password Validator character has only special characters ', async ({ page }) => {
+    await passwordPage.enterPassword(testData.allSpecialChar);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("#$%^*@#$%^&*^%");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_)."
-    );
 });
 
 
 test('password Validator character has only consecutive numbers ', async ({ page }) => {
+    await passwordPage.enterPassword(testData.consecutiveNumber);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("0123456789");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_)."
-    );
 });
 
 
 test('password Validator character has only consecutive letters ', async ({ page }) => {
+    await passwordPage.enterPassword(testData.consecutiveLetters);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("abcdefghijklmn");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_)."
-    );
 });
 
 test('password Validator character has month name', async ({ page }) => {
+    await passwordPage.enterPassword(testData.monthName);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("January");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must be between 8 and 15 characters."
-    );
 });
 
 
 test('password Validator character has Day name', async ({ page }) => {
+    await passwordPage.enterPassword(testData.dayName);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("MonTueWedThur");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_)."
-    );
 });
 
 
 test('password Validator character has Mobile number with  country code as 0', async ({ page }) => {
-
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("08802825904");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_)."
-    );
+    await passwordPage.enterPassword(testData.countryCodeAs0);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 });
 
 test('password Validator character has Mobile number without country code as 0', async ({ page }) => {
-
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("8802825904");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_)."
-    );
+    await passwordPage.enterPassword(testData.withoutcountrycode);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 });
 
 test('password Validator character has Mobile number with  country code as 91', async ({ page }) => {
-
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("918802825904");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_).");
+    await passwordPage.enterPassword(testData.countrycodeAs91);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 });
 
 
 test('password Validator character has Mobile number with country code as +91', async ({ page }) => {
-
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("+918802825904");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_).");
+    await passwordPage.enterPassword(testData.countrycodeAsPlus91);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 });
 
 
 test('password Validator character has all characters as upper case', async ({ page }) => {
-
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("SHIVANISINGHA@1");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_).");
+    await passwordPage.enterPassword(testData.AllUpperCase);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 });
 
 
 test('password Validator character has all characters as lower case', async ({ page }) => {
+    await passwordPage.enterPassword(testData.AllLoweCase);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedPasswordError2);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("shivanisingh@1");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Wrong Password ! Password must contain uppercase, lowercase, number and special character (!@#$%_).");
 });
 
 
 test('password Validator character has all characters as per check', async ({ page }) => {
+    await passwordPage.enterPassword(testData.validPassword);
+    await passwordPage.clickCheck();
+    await expect(passwordPage.resultMessage).toContainText(testData.expectedSuccessMessage);
 
-    await page.goto('file:///Users/shivanisinghal/Desktop/password-validator/index.html');
-
-    await page.locator("//input[@id='password']").fill("Shivanisingh@1");
-
-    await page.locator("//button[text()='Check']").click();
-
-    const result = page.locator("//div[@id='result']");
-
-    await expect(result).toHaveText(
-        "Congratulations ! Password is valid!");
 });

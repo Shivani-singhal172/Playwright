@@ -18,5 +18,8 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.3"
+  },
+  "dependencies": {
+    "properties-reader": "^3.0.1"
   }
 }

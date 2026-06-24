@@ -1,21 +1,28 @@
 import { test, expect } from '@playwright/test';
+const BasePage = require('../Utils/BasePage');
+const AlertAndModalPage = require('../pages/AlertAndModalPage');
+const testData = require('../testdata/PasswordData.json');
+let alertAndModalPage;
 
-test('Button Interactions', async ({ page }) => {
-
-  await page.goto('file:///Users/shivanisinghal/Desktop/automation-practice-master/app/index.html');
-
+test.beforeEach(async ({ page }) => {
+  alertAndModalPage = new AlertAndModalPage(page);
+  await page.goto(
+    BasePage.getProperty('baseUrlAutomationMasterPage')
+  );
   await page.locator("//a[@href='alerts-modals.html']").click();
-
   await page.waitForTimeout(2000);
+});
 
-  //JavaScript Alert
+test('Button Interactions for Javascript Alert ', async ({ page }) => {
   const dialogPromise = page.waitForEvent('dialog');
   page.locator("//button[text()='Show Alert']").click();
   const dialog = await dialogPromise;
   const msg = dialog.message();
   dialog.accept();
   expect(dialog.message()).toBe(msg);
+});
 
+test('Button Interactions for Confirm Dialog', async ({ page }) => {
   //Confirm Dialog
   const dialogPromise1 = page.waitForEvent('dialog');
   page.locator("//button[text()='Show Confirm Dialog']").click();
@@ -25,6 +32,9 @@ test('Button Interactions', async ({ page }) => {
   expect(dialog1.message()).toBe(msg1);
   await expect(page.locator('#confirmResult')).toHaveText('You clicked OK!');
 
+});
+
+test('Button Interactions for Prompt Dialog', async ({ page }) => {
   //Prompt Dialog
   const dialogPromise2 = page.waitForEvent('dialog');
   page.locator("//button[text()='Show Prompt']").click();
@@ -34,6 +44,9 @@ test('Button Interactions', async ({ page }) => {
   expect(dialog2.message()).toBe(msg2);
   await expect(page.locator('#promptResult')).toHaveText('Hello, Shivani! Welcome!');
 
+});
+
+test('Button Interactions for Simple Modal', async ({ page }) => {
   // Simple Modal
   await page.locator("//button[text()='Open Simple Modal']").click();
   await expect(page.locator('#simpleModal')).toBeVisible();
@@ -43,6 +56,8 @@ test('Button Interactions', async ({ page }) => {
   await page.locator("//div[@id='simpleModal']//button").click();
   await expect(page.locator('#simpleModal')).not.toBeVisible();
 
+});
+test('Button Interactions for confirmation modal', async ({ page }) => {
   //confirmation modal
   await page.locator("//button[text()='Open Confirmation Modal']").click();
   await expect(page.locator('#confirmModal')).toBeVisible();
@@ -53,7 +68,9 @@ test('Button Interactions', async ({ page }) => {
   await page.waitForTimeout(1000);
   await expect(page.locator('#modalConfirmResult')).toHaveText('You confirmed the action!');
   await expect(page.locator('#confirmModal')).not.toBeVisible();
+});
 
+test('Button Interactions for Form Modal', async ({ page }) => {
   //Form Modal
   await page.locator("//button[text()='Open Form Modal']").click();
   await expect(page.locator('#formModal')).toBeVisible();
@@ -61,8 +78,9 @@ test('Button Interactions', async ({ page }) => {
   await page.locator("//input[@id='modalEmail']").fill('shivani@example.com');
   await page.locator("//div[@id='formModal']//button[text()='Submit']").click();
   await expect(page.locator('#formModalResult')).toHaveText('Form submitted! Name: Shivani, Email: shivani@example.com');
+});
 
-
+test('Button Interactions for Delayed Modal', async ({ page }) => {
   //Delayed Modal
   await page.locator("//button[text()='Show Modal (2s delay)']").click();
   await page.waitForTimeout(2000);
