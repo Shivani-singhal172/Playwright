@@ -9,8 +9,7 @@ class BasePage {
             __dirname,
             '../resources/config.properties'
         );
-        // console.log('File Path:', filePath);
-        // console.log('Exists:', fs.existsSync(filePath));
+
         const data = fs.readFileSync(filePath, 'utf8');
 
         const lines = data.split('\n');
@@ -27,7 +26,7 @@ class BasePage {
         return null;
     }
 
-   
+
 
 
 }
